@@ -25,11 +25,11 @@ namespace comp110_worksheet_7
 		public static long GetTotalSize(string directory)
 		{
             
-            string[] files = Directory.GetFileSystemEntries(directory); // search pattern? 
+            string[] files = Directory.GetFileSystemEntries(directory); 
 
             long Total_Size = 0;            
             
-            foreach (string element in files){
+            foreach (string element in files){ // loop through adding all the files and directorys sizes to "Total Size"
                 if (IsDirectory(element))
                 {
                     Total_Size = Total_Size + GetTotalSize(element);
@@ -47,11 +47,11 @@ namespace comp110_worksheet_7
 		public static int CountFiles(string directory)
 		{
 
-            string[] files = Directory.GetFileSystemEntries(directory); // search pattern? 
+            string[] files = Directory.GetFileSystemEntries(directory); 
 
             int file_count = 0;
 
-            foreach (string element in files)
+            foreach (string element in files)   // loop through all the files and directorys counting up one for every file you pass.
             {
                 if (IsDirectory(element))
                 {
@@ -81,9 +81,8 @@ namespace comp110_worksheet_7
                     Current_Depth = New_Depth;
                 }            
             }
-
-            //Console.WriteLine(Current_Depth++);
-            Current_Depth++;
+            
+            Current_Depth++;    // only counting up as you leave so pairing folders dont effect the result.
             return Current_Depth;
             
                         
@@ -97,13 +96,13 @@ namespace comp110_worksheet_7
 
             string[] files = Directory.GetFileSystemEntries(directory);
 
-            foreach (string element in files)
+            foreach (string element in files) // check's each file against recorded smallest and reasigns variables if smaller file is found. 
             {
                 if (IsDirectory(element) == false)
                 {
                     long File_Size = GetFileSize(element);
 
-                    if (Smallest_File_Size > File_Size || Smallest_File_Size == 0)
+                    if (Smallest_File_Size > File_Size || Smallest_File_Size == 0) // ensuring to eliminate the starting variables "" and 0
                     {
                         Smallest_File_Size = File_Size;
                         Saved_Directory = element;
@@ -130,7 +129,7 @@ namespace comp110_worksheet_7
 
             string[] files = Directory.GetFileSystemEntries(directory);
 
-            foreach (string element in files)
+            foreach (string element in files)  // check's each file against recorded largest and reasigns variables if larger file is found.
             {
                 if (IsDirectory(element) == false)
                 {
@@ -168,7 +167,7 @@ namespace comp110_worksheet_7
 
             string[] files = Directory.GetFileSystemEntries(directory);
 
-            foreach (string element in files)
+            foreach (string element in files)  //checking through all the files that match 
             {
                 if (IsDirectory(element) == false)
                 {
@@ -176,14 +175,12 @@ namespace comp110_worksheet_7
 
                     if (Size_To_Match == File_Size)
                     {
-                        Files_That_Match.Add(element);                       
-
-
+                        Files_That_Match.Add(element);
                     }
                 }
                 else
                 {
-                    IEnumerable<string> List_Of_New_Items = GetFilesOfSize(element, size);
+                    IEnumerable<string> List_Of_New_Items = GetFilesOfSize(element, size); //duplicates all information from the returning list to the current list.
                     foreach (string New_Item in List_Of_New_Items)
                     {
                         Files_That_Match.Add(New_Item);
