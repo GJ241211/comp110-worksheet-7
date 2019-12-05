@@ -92,26 +92,109 @@ namespace comp110_worksheet_7
 		// Get the path and size (in bytes) of the smallest file below the given directory
 		public static Tuple<string, long> GetSmallestFile(string directory)
 		{
-			throw new NotImplementedException();
+            long Smallest_File_Size = 0;
+            string Saved_Directory = "" ;
 
+            string[] files = Directory.GetFileSystemEntries(directory);
+
+            foreach (string element in files)
+            {
+                if (IsDirectory(element) == false)
+                {
+                    long File_Size = GetFileSize(element);
+
+                    if (Smallest_File_Size > File_Size || Smallest_File_Size == 0)
+                    {
+                        Smallest_File_Size = File_Size;
+                        Saved_Directory = element;
+                    }
+                }
+                else {
+                    Tuple <string, long>Smallest_In_Directory = GetSmallestFile(element);
+
+                    if (Smallest_File_Size > Smallest_In_Directory.Item2 || Smallest_File_Size == 0) {
+                        Smallest_File_Size = Smallest_In_Directory.Item2;
+                        Saved_Directory = Smallest_In_Directory.Item1;
+                    }
+                }
+            }
+
+            return (new Tuple<string, long>(Saved_Directory, Smallest_File_Size));                                  
 		}
 
 		// Get the path and size (in bytes) of the largest file below the given directory
 		public static Tuple<string, long> GetLargestFile(string directory)
 		{
-			throw new NotImplementedException();
+            long Largest_File_Size = 0;
+            string Saved_Directory = "";
+
+            string[] files = Directory.GetFileSystemEntries(directory);
+
+            foreach (string element in files)
+            {
+                if (IsDirectory(element) == false)
+                {
+                    long File_Size = GetFileSize(element);
+
+                    if (Largest_File_Size < File_Size )
+                    {
+                        Largest_File_Size = File_Size;
+                        Saved_Directory = element;
+                    }
+                }
+                else
+                {
+                    Tuple<string, long> Largest_In_Directory = GetLargestFile(element);
+
+                    if (Largest_File_Size < Largest_In_Directory.Item2)
+                    {
+                        Largest_File_Size = Largest_In_Directory.Item2;
+                        Saved_Directory = Largest_In_Directory.Item1;
+                    }
+                }
+            }
+
+            return (new Tuple<string, long>(Saved_Directory, Largest_File_Size));
+
+            throw new NotImplementedException();
 		}
 
 		// Get all files whose size is equal to the given value (in bytes) below the given directory
 		public static IEnumerable<string> GetFilesOfSize(string directory, long size)
 		{
-
             List<string> Files_That_Match = new List<string>();
 
-            // loop through all files adding the ones that match to a list,
+            long Size_To_Match = size;
+
+            string[] files = Directory.GetFileSystemEntries(directory);
+
+            foreach (string element in files)
+            {
+                if (IsDirectory(element) == false)
+                {
+                    long File_Size = GetFileSize(element);
+
+                    if (Size_To_Match == File_Size)
+                    {
+                        Files_That_Match.Add(element);                       
 
 
+                    }
+                }
+                else
+                {
+                    IEnumerable<string> List_Of_New_Items = GetFilesOfSize(element, size);
+                    foreach (string New_Item in List_Of_New_Items)
+                    {
+                        Files_That_Match.Add(New_Item);
+                    }
 
+                }
+            
+            
+            }
+            return (Files_That_Match);
+            
             throw new NotImplementedException();              
 
 		}
